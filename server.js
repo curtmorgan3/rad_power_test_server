@@ -4,12 +4,13 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const handleErrors = require('./middleware/handleErrors');
+const { sign, passport } = require('./jwtEncrypt.js');
+const { BadRequest } = require('./utils/errors');
 
 const PORT = process.env.PORT || 3001;
 
 // Routers 
-const { userRouter } = require('./routes/userRouter.js');
-// End routers
+const { graphqlRouter } = require('./routes/graphql.js');
 
 const app = express();
 
@@ -17,15 +18,32 @@ const app = express();
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(cors());
-app.use(handleErrors);
-/////////////
+app.use('/graphql', graphqlRouter);
 
-// Connect Routers
-app.use('/users', userRouter);
-// End connect routers
+app.post('/authenticate', (req, res, next) => {
+	try {
+		if (!req.body.username) {
+			throw new BadRequest('Must provide a username');
+		}
 
-app.get('/', (req, res) => {
-	res.json({msg: "Index Page"});
+		const token = sign({
+			username: req.body.username,
+		});
+		
+		res.status(200).json({ token });
+
+	} catch (e) {
+		next(e);
+	}
+})
+
+app.get('/', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+	try {
+		res.status(200).json({ msg: "Index Page" });
+	} catch (e) {
+		next(e);
+	}
 });
 
+app.use(handleErrors);
 app.listen(PORT, ()=> console.log(`Server running on ${PORT}`));
