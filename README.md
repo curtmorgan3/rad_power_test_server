@@ -4,7 +4,7 @@ Curt Morgan
 
 Client Repo: https://github.com/curtmorgan3/rad_power_test_client
 
-Client URL: 
+Client URL: https://morgan-rad-client.netlify.app/#/
 
 Server Repo: https://github.com/curtmorgan3/rad_power_test_server
 
