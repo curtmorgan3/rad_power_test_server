@@ -2,11 +2,10 @@ const graphqlRouter = require('express').Router();
 const { graphqlHTTP } = require('express-graphql');
 const { buildSchema } = require('graphql');
 const { passport } = require('../jwtEncrypt.js');
-const { getEntry, getEntries } = require('../utils/resolvers.js');
+const { getEntries } = require('../utils/resolvers.js');
 
 const schema = buildSchema(`
   type Query {
-    entry(serial: String!): Bike
     entries(serials: String!): [Bike]
   },
   type Bike {
@@ -21,7 +20,6 @@ const schema = buildSchema(`
 `);
 
 const root = {
-  entry: getEntry,
   entries: getEntries
 };
 

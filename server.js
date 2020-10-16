@@ -35,14 +35,6 @@ app.post('/authenticate', (req, res, next) => {
 	} catch (e) {
 		next(e);
 	}
-})
-
-app.get('/', passport.authenticate('jwt', { session: false }), (req, res, next) => {
-	try {
-		res.status(200).json({ msg: "Index Page" });
-	} catch (e) {
-		next(e);
-	}
 });
 
 app.use(handleErrors);

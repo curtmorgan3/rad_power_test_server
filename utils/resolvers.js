@@ -1,23 +1,6 @@
 const { BadRequest } = require('../utils/errors');
 const { definitions } = require('../utils/definitions');
 
-const getEntry = (num) => {
-  if (!num || !num.serial || typeof num.serial !== 'string') {
-    throw new BadRequest('Must provide a property serial of type string.');
-  }
-
-  if (num.serial.length !== 13) {
-    throw new BadRequest('Expected serial to be 13 characters.');
-  }
-
-  /*
-    Right around here is where we'd try to fetch entries from a DB to verify the 
-    serial number provided is present.
-  */
-
-  return parseSerialNumber(num.serial);
-}
-
 const getEntries = (num) => {
   if (!num || !num.serials || typeof num.serials !== 'string') {
     throw new BadRequest('Must provide a property serial of type string.');
@@ -60,6 +43,7 @@ function parseSerialNumber(num) {
   const assemblyPlant = definitions.assemblyPlants[factoryCode] ? definitions.assemblyPlants[factoryCode] : 'Unknown';
 
   // Only supports single digit version numbers
+  // Future versions should account for this
   const version = parseInt(num.charAt(6));
 
   let unique = num.slice(7);
