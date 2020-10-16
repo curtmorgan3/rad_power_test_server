@@ -64,6 +64,5 @@ function parseSerialNumber(num) {
 }
 
 module.exports = {
-  getEntry,
   getEntries
 }
