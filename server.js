@@ -37,5 +37,9 @@ app.post('/authenticate', (req, res, next) => {
 	}
 });
 
+app.use('/', (req, res) => {
+	res.json({ msg: 'Morgan Rad Power Test' });
+})
+
 app.use(handleErrors);
 app.listen(PORT, ()=> console.log(`Server running on ${PORT}`));
